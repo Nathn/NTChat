@@ -1,0 +1,47 @@
+{
+	"name": "ntchat",
+	"version": "1.0.1",
+	"description": "",
+	"main": "app.js",
+	"dependencies": {
+		"aws-sdk": "2.x",
+		"body-parser": "^1.18.3",
+		"clipboardy": "^2.3.0",
+		"cloudinary": "^1.23.0",
+		"discord.js": "^12.2.0",
+		"dotenv": "^5.0.1",
+		"ejs": "2.x",
+		"es6-promisify": "^5.0.0",
+		"express": "^4.16.3",
+		"express-fileupload": "^1.2.0",
+		"express-session": "^1.15.6",
+		"express-validator": "^5.2.0",
+		"force-ssl-heroku": "^1.0.2",
+		"jimp": "^0.2.28",
+		"md5": "^2.2.1",
+		"moment": "^2.22.2",
+		"mongoose": "^5.10.8",
+		"mongoose-mongodb-errors": "0.0.2",
+		"mongoose-shortid-nodeps": "^0.6.5",
+		"multer": "^1.4.2",
+		"nodemailer": "^6.4.11",
+		"passport": "^0.4.0",
+		"passport-local-mongoose": "^5.0.0",
+		"pug": "^3.0.0",
+		"uuid": "^3.2.1",
+		"validator": "^10.2.0"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.3"
+	},
+	"scripts": {
+		"start": "node ./app.js",
+		"dev": "nodemon ./app.js"
+	},
+	"now": {
+		"dotenv": "variables.env.now"
+	},
+	"keywords": [],
+	"author": "Nathn",
+	"license": "MIT"
+}

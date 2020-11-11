@@ -1,0 +1,8 @@
+node_modules/
+logs
+tmp
+*.log
+variables.env
+variables.env.now
+Procfile
+.vscode/
