@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/indexController');
 const authController = require('../controllers/authController');
-const chatController = require('../controllers/chatController');
 const userController = require('../controllers/userController');
 
 // Index page
