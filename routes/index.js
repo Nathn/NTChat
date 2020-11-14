@@ -4,10 +4,12 @@ const router = express.Router();
 const indexController = require('../controllers/indexController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
+const chatController = require('../controllers/chatController');
 
 // Index page
 router.get('/', indexController.indexPage);
 
+router.get('/chatwindow', chatController.chatPage);
 router.get('/error', indexController.errorPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
