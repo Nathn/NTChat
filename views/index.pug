@@ -1,5 +1,27 @@
-h2 Hello !
-h3 You are on ntchat, this app is still under construction. You can check back in a few days or
-	| &nbsp;
-	a(href="mailto:nathan@tranchant.fr") contact me by email
-	|  !
+<!DOCTYPE html>
+html(lang="fr")
+	head
+		meta(charset="UTF-8")
+		meta(lang="fr")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		link(rel='stylesheet' href='/style.css')
+		//- link(rel="stylesheet" media="screen" href="https://fontlibrary.org/face/inter-ui" type="text/css")
+		link(rel="shortcut icon" type="image/png" href="/uploads/favicon.png")
+		meta(property="og:title" content="NTChat - Chat web en temps réel")
+		meta(property="og:type" content="website")
+		meta(name="keywords" content="chat, tchat, live, web, nathn, open source")
+		meta(name="og:site_name" content="NTChat")
+		meta(property="og:url" content="chat.nathn.tech")
+		meta(property="og:image" content="/uploads/favicon.png")
+		meta(property="og:description" content="NTChat - Chat web rapide, moderne et en temps réel")
+		meta(name="title" content="NTChat - Chat web")
+		meta(name="description" content="NTChat - Chat web rapide, moderne et en temps réel")
+		meta(name="robots")
+		title NTChat - Chat web en temps réel
+		script(src='https://use.fontawesome.com/74eb59777f.js')
+
+
+	body
+		.chat-container
+			iframe(src="/window")

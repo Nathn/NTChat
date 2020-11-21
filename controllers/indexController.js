@@ -11,7 +11,7 @@ exports.indexPage = async (req, res) => {
 		res.render('index');
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error')
+		res.render('error');
 	}
 
 }
@@ -24,16 +24,8 @@ exports.doNotExistPage = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error');
-	}
-
-}
-
-exports.errorPage = async (req, res) => {
-	try {
 		res.render('error');
-	} catch (e) {
-		console.log(e);
 	}
 
 }
+

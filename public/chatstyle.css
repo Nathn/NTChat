@@ -1,0 +1,29 @@
+body {
+	font-size: 1rem;
+	font-family: Arial, sans-serif;
+	word-break: break-word;
+	color: #D7D5D9;
+	background-color: #36393F;
+}
+
+.message {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #555;
+	cursor: pointer;
+}
+
+.message:hover {
+	background-color: #555
+}
+
+.messagetext {
+	font-size: 1.1rem;
+	padding-bottom:5px;
+	padding-left: 5px;
+}
+.messageauthor {
+	padding-top: 5px;
+	font-size: 0.8rem;
+	padding-left: 6px;
+}

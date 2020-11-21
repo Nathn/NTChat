@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+html(lang="fr")
+	head
+		meta(charset="UTF-8")
+		meta(lang="fr")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		link(rel='stylesheet' href='/windowstyle.css')
+		//- link(rel="stylesheet" media="screen" href="https://fontlibrary.org/face/inter-ui" type="text/css")
+		script(src='https://use.fontawesome.com/74eb59777f.js')
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+		script(type="text/javascript").
+			var params_state = false;
+			var content = ''
+			var refresh = setInterval(updateChat, 3000)
+			async function loadedPage(){
+				await updateChat()
+				return false;
+			};
+			function changeChannel(channel, onload=false){
+				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 3);
+				var chat = document.getElementById('chatiframe')
+				chat.src='/chat-'+channel;
+
+				var gotoChannel = document.getElementById(channel+'chan')
+				gotoChannel.style='background-color: #555;';
+
+				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('generalchan')
+				currentChat.style='';
+
+				return false;
+			};
+			function updateChat(){
+				var chat = document.getElementById('chatiframe');
+				$.ajax({
+					url: document.getElementById('chatiframe').getAttribute("src"),
+					type: 'GET',
+					success: (res) => {
+						if (content.length !== res.length) {
+							content = res;
+							chat.src = chat.src;
+						}
+					},
+					error: (jqXHR, textStatus, errorThrown) => {
+						console.error(textStatus);
+					}
+				});
+				chat.onload = function () {
+					chat.contentWindow.scrollTo(0, chat.scrollHeight);
+				}
+				return false;
+			};
+			function updateRefresh(secondes){
+				clearInterval(refresh);
+				var refresh = setInterval(updateChat, secondes*1000);
+			};
+			function showParams(){
+				var params = document.getElementById('params');
+				var param_button = document.getElementById('param_button');
+				if (params_state == false) {
+					params.style = 'visibility: visible;'
+					param_button.style = 'background-color: #555'
+					params_state = true
+				} else {
+					params.style = 'visibility: hidden;'
+					param_button.style = ''
+					params_state = false
+				}
+				return false;
+			};
+
+
+	body(onload="loadedPage(); var params_state = false;")
+		.left_col
+			if !user
+				input(type="button" onclick=`window.location.href = '/register';` class='button register_button' value='Inscription')
+				input(type="button" onclick=`window.location.href = '/login';` class='button login_button' value='Connexion')
+			.channels
+				.channel(onclick="changeChannel('gen');" id="genchan" style="background-color: #555;")
+					| #General
+				.channel(onclick="changeChannel('jvs');" id="jvschan")
+					| #Jeux-video
+				.channel(onclick="changeChannel('mem');" id="memchan")
+					| #Memes
+				.channel(onclick="changeChannel('nsi');" id="nsichan")
+					| #NSI
+			.param_button(onclick="showParams();" id="param_button")
+				| Paramètres
+			.params(style="visibility: hidden;" id="params" onload="var params_state = false;")
+				.param()
+					| Vitesse de rafraîchissement
+					br
+					| (en secondes) :
+					.number_imput
+						input(type="number" placeholder="" step="0.5" min="0.5" max="60" value="3" onchange="updateRefresh(this.value);")
+
+		.right_col
+			.messages
+				iframe(src="/chat-gen" id="chatiframe")
+			form.msgform(action='/sendmsg' method='POST' enctype='multipart/form-data')
+				input(name='message' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2')
+				button(type="submit" class='message_button')
+					i(class="fa fa-paper-plane")
+

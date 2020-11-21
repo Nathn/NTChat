@@ -1,0 +1,150 @@
+@import url('https://rsms.me/inter/inter.css');
+
+body {
+	font-size: 1rem;
+	font-family: Arial, sans-serif;
+	word-break: break-word;
+	color: #D7D5D9;
+	background-color: #36393F;
+}
+
+.left_col {
+	height: 100%;
+  	width: 20%;
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+}
+
+.right_col {
+	height: 100%;
+  	width: 80%;
+  	position: fixed;
+  	top: 0;
+	left: 20%;
+}
+
+.channels {
+	margin-top: 30px;
+	top: 20%;
+	height: 20%;
+}
+
+.channel {
+	padding: 5px 0px;
+	margin-top:10px;
+	margin-left: 5%;
+	width: 90%;
+	border: 1px solid #555;
+	border-radius: 3px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.channel:hover {
+	background-color: #555
+}
+
+.selected {
+	background-color: #555
+}
+
+.param_button {
+	padding: 5px 0px;
+	margin-top:50px;
+	margin-left: 5%;
+	width: 90%;
+	border: 1px solid #555;
+	border-radius: 3px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.param_button:hover {
+	background-color: #555
+}
+
+.params{
+	margin-top: 10px;
+}
+
+.param {
+	text-align: center;
+	padding: 10px 0px;
+	margin-left: 5%;
+	width: 90%;
+	border-bottom: 1px solid #aaa;
+}
+
+.param:last-child {
+	border: 0;
+}
+
+.number_imput {
+	padding-top: 10px;
+	border-radius: 10px;
+}
+
+.messages {
+	height: 90%;
+	top: 0;
+	overflow: auto;
+}
+
+.messages iframe {
+	width: 100%;
+	height: 99%;
+	border: none;
+}
+
+
+.button {
+	color: #ccc;
+	font-size: 1rem;
+	background-color: transparent;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	border: 3px solid #ccc;
+	height: 35px;
+	font-family: Inter;
+}
+
+.button:hover {
+	background-color: #ccc;
+	color: #36393F;
+}
+
+.login_button,
+.register_button {
+	margin-top:10px;
+	margin-left: 5%;
+	width: 90%;
+}
+
+.msgform {
+	position: relative;
+	margin-top: 15px;
+	width:100%;
+}
+
+.message_input {
+	position: relative;
+	border: 2px solid #add8e6;
+	border-radius: 5px;
+	padding: 5px 7px;
+	width:85%;
+	height: 90%;
+}
+
+.message_button {
+	position: relative;
+	border: 2px solid #add8e6;
+	padding: 5px 7px;
+	border-radius: 5px;
+	height: 90%;
+	width: 10%;
+	margin-left: 5px;
+	cursor: pointer;
+}
+

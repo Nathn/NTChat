@@ -9,8 +9,11 @@ const chatController = require('../controllers/chatController');
 // Index page
 router.get('/', indexController.indexPage);
 
-router.get('/chatwindow', chatController.chatPage);
-router.get('/error', indexController.errorPage);
+router.get('/window', chatController.winPage);
+router.get('/chat-gen', chatController.chatGeneralPage);
+router.get('/chat-jvs', chatController.chatJvPage);
+router.get('/chat-mem', chatController.chatMemesPage);
+router.get('/chat-nsi', chatController.chatNsiPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
 

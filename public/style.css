@@ -2,5 +2,26 @@ body {
 	font-size: 1rem;
 	font-family: Arial, sans-serif;
 	word-break: break-word;
-	color: #333333;
+	color: #D7D5D9;
+	background-color: #2F3136;
 }
+
+.chat-container {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border: 3px solid #D7D5D9;
+	border-radius: 10px;
+	max-width: 1080px;
+	max-height: 75%;
+	margin: auto;
+}
+
+.chat-container iframe {
+	height: 100%;
+	width: 100%;
+	border: none;
+}
+

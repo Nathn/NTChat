@@ -10,7 +10,12 @@ const msgSchema = new mongoose.Schema({
 	},
 	author: {
 		type: mongoose.Schema.ObjectId,
-		ref: 'User'
+		ref: 'User',
+		default: null
+	},
+	anonymous: {
+		type: Boolean,
+		default: false
 	},
 	image: {
 		type: String,
