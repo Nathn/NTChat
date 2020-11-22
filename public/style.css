@@ -25,3 +25,67 @@ body {
 	border: none;
 }
 
+.regform {
+	position: absolute;
+	top:15%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	vertical-align: middle;
+	width: 40%;
+	height: 70%;
+ 	margin: 0 auto;
+  	padding: 20px 50px 40px;
+  	border: 2px solid #aaa;
+  	border-radius: 8px;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+
+.regform * {
+    box-sizing: border-box;
+}
+.regform h2{
+  	text-align: center;
+  	margin-bottom: 15%;
+}
+
+.regform input {
+  	margin-bottom: 15px;
+  	display: block;
+  	height: 32px;
+  	padding: 5px 10px;
+  	width: 100%;
+  	border: 1px solid #aaa;
+}
+
+.regform label {
+  color: #aaa;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+
+.regform button[type=submit] {
+  display: block;
+  margin: 15% auto 0;
+  width: 150px;
+  height: 40px;
+  border-radius: 25px;
+  border: 1px solid #aaa;
+  color: #2F3136;
+  font-weight: 700;
+  box-shadow: 1px 4px 10px 1px #aaa;
+}
+
+.backbutton {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	cursor: pointer;
+}
+
+.backbutton i {
+	font-size: 35px;
+}
+

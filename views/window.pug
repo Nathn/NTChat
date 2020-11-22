@@ -6,15 +6,14 @@ html(lang="fr")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible", content="ie=edge")
 		link(rel='stylesheet' href='/windowstyle.css')
-		//- link(rel="stylesheet" media="screen" href="https://fontlibrary.org/face/inter-ui" type="text/css")
 		script(src='https://use.fontawesome.com/74eb59777f.js')
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
 		script(type="text/javascript").
-			var params_state = false;
-			var content = ''
-			var refresh = setInterval(updateChat, 3000)
 			async function loadedPage(){
+				var content = ''
 				await updateChat()
+				refresh = setInterval(updateChat, 3000)
+				console.log(refresh)
 				return false;
 			};
 			function changeChannel(channel, onload=false){
@@ -50,11 +49,7 @@ html(lang="fr")
 				}
 				return false;
 			};
-			function updateRefresh(secondes){
-				clearInterval(refresh);
-				var refresh = setInterval(updateChat, secondes*1000);
-			};
-			function showParams(){
+			function showParams(){ //not used atm
 				var params = document.getElementById('params');
 				var param_button = document.getElementById('param_button');
 				if (params_state == false) {
@@ -84,9 +79,9 @@ html(lang="fr")
 					| #Memes
 				.channel(onclick="changeChannel('nsi');" id="nsichan")
 					| #NSI
-			.param_button(onclick="showParams();" id="param_button")
+			//- .param_button(onclick="showParams();" id="param_button")
 				| Paramètres
-			.params(style="visibility: hidden;" id="params" onload="var params_state = false;")
+			//- .params(style="visibility: hidden;" id="params" onload="var params_state = false;")
 				.param()
 					| Vitesse de rafraîchissement
 					br
@@ -97,8 +92,12 @@ html(lang="fr")
 		.right_col
 			.messages
 				iframe(src="/chat-gen" id="chatiframe")
-			form.msgform(action='/sendmsg' method='POST' enctype='multipart/form-data')
-				input(name='message' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2')
-				button(type="submit" class='message_button')
-					i(class="fa fa-paper-plane")
+			if user
+				form.msgform(action='/sendmsg' method='POST' enctype='multipart/form-data')
+					input(name='message' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2')
+					button(type="submit" class='message_button')
+						i(class="fa fa-paper-plane")
+			else
+				.msgform
+					.disallowed Vous devez être connecté pour utiliser le chat.
 

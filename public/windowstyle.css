@@ -80,11 +80,6 @@ body {
 	border: 0;
 }
 
-.number_imput {
-	padding-top: 10px;
-	border-radius: 10px;
-}
-
 .messages {
 	height: 90%;
 	top: 0;
@@ -148,3 +143,7 @@ body {
 	cursor: pointer;
 }
 
+.disallowed {
+	text-align: center;
+	font-weight: bold;
+}

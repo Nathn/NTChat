@@ -1,1 +1,23 @@
-h3 This page is not yet operational !
+<!DOCTYPE html>
+html(lang="fr")
+	head
+		meta(charset="UTF-8")
+		meta(lang="fr")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		link(rel='stylesheet' href='/style.css')
+		script(src='https://use.fontawesome.com/74eb59777f.js')
+
+	body
+		.backbutton(onclick=`window.location.href = '/window';`)
+			i(class="fa fa-chevron-circle-left")
+		form.regform(action='/login' method='POST')
+			h2(class="header") Connexion à un compte
+			label(for='username') Nom d'utilisateur :
+			br
+			input(type='text' name='username' required)
+			br
+			label(for='password') Mot de passe :
+			br
+			input(type='password' name='password' required)
+			button(type='submit') Se connecter
