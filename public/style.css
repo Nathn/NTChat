@@ -51,12 +51,14 @@ body {
 }
 
 .regform input {
-  	margin-bottom: 15px;
+	margin-bottom: 15px;
+	margin-top: 3px;
   	display: block;
   	height: 32px;
   	padding: 5px 10px;
   	width: 100%;
-  	border: 1px solid #aaa;
+	border: 1px solid #aaa;
+	border-radius: 8px;
 }
 
 .regform label {
@@ -89,3 +91,19 @@ body {
 	font-size: 35px;
 }
 
+.fullscreenbutton {
+	position: relative;
+	bottom: 68px;
+	cursor: pointer;
+	width: fit-content;
+	height: fit-content;
+}
+
+.fullscreenbutton i {
+	box-sizing: border-box;
+	padding: 15px;
+	border-top: 3px solid #D7D5D9;
+	border-right: 3px solid #D7D5D9;
+	border-radius: 5px;
+	font-size: 35px;
+}

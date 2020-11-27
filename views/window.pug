@@ -67,7 +67,12 @@ html(lang="fr")
 
 	body(onload="loadedPage(); var params_state = false;")
 		.left_col
-			if !user
+			if user
+				.account
+					i(class="fa fa-user-circle")
+					|  #{user.name}
+				input(type="button" onclick=`window.location.href = '/logout';` class='button logout_button' value='Déconnexion')
+			else
 				input(type="button" onclick=`window.location.href = '/register';` class='button register_button' value='Inscription')
 				input(type="button" onclick=`window.location.href = '/login';` class='button login_button' value='Connexion')
 			.channels

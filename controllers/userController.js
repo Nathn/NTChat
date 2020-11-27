@@ -39,8 +39,6 @@ exports.verifyRegister = async (req, res, next) => {
 	req.checkBody('email', '203').notEmpty();
 	req.checkBody('email', '204').isEmail();
 	req.checkBody('password', '205').notEmpty();
-	req.checkBody('password-confirm', '206').notEmpty();
-	req.checkBody('password-confirm', '207').equals(req.body.password);
 
 	const errors = req.validationErrors();
 	if (errors) {
@@ -80,7 +78,7 @@ exports.registerUser = async (req, res, next) => {
 	try {
 		const user = new User({
 			username: req.body.username,
-			name: req.body.username.charAt(0).toUpperCase() + req.body.username.slice(1),
+			name: req.body.username,
 			email: req.body.email,
 			lang: req.body.lang
 		});

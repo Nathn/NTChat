@@ -24,9 +24,16 @@ body {
 	left: 20%;
 }
 
+.account {
+	margin-top:10px;
+	margin-left: 5%;
+	width: 90%;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
 .channels {
 	margin-top: 30px;
-	top: 20%;
 	height: 20%;
 }
 
@@ -111,7 +118,8 @@ body {
 }
 
 .login_button,
-.register_button {
+.register_button,
+.logout_button {
 	margin-top:10px;
 	margin-left: 5%;
 	width: 90%;

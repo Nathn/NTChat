@@ -16,6 +16,7 @@ router.get('/chat-mem', chatController.chatMemesPage);
 router.get('/chat-nsi', chatController.chatNsiPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
+router.get('/logout', authController.logout);
 
 router.get('/:something', indexController.doNotExistPage);
 
@@ -26,6 +27,7 @@ router.post('/register',
 	authController.login
 )
 router.post('/login', authController.login);
+
 
 
 // Exporting the module
