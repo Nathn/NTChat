@@ -9,7 +9,7 @@ const chatController = require('../controllers/chatController');
 // Index page
 router.get('/', indexController.indexPage);
 
-router.get('/window', chatController.winPage);
+router.get('/fs', indexController.fullscreenPage);
 router.get('/chat-gen', chatController.chatGeneralPage);
 router.get('/chat-jvs', chatController.chatJvPage);
 router.get('/chat-mem', chatController.chatMemesPage);
@@ -17,6 +17,8 @@ router.get('/chat-nsi', chatController.chatNsiPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
 router.get('/logout', authController.logout);
+router.get('/del/:id', chatController.deletemsg);
+router.get('/ban/:id/:channel', chatController.ban);
 
 router.get('/:something', indexController.doNotExistPage);
 
@@ -27,6 +29,7 @@ router.post('/register',
 	authController.login
 )
 router.post('/login', authController.login);
+router.post('/sendmsg/:channel', chatController.sendmsg);
 
 
 

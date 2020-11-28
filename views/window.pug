@@ -11,21 +11,34 @@ html(lang="fr")
 		script(type="text/javascript").
 			async function loadedPage(){
 				var content = ''
+				if (GetURLParameter('chan')) await changeChannel(GetURLParameter('chan'))
 				await updateChat()
 				refresh = setInterval(updateChat, 3000)
-				console.log(refresh)
 				return false;
 			};
-			function changeChannel(channel, onload=false){
+			function GetURLParameter(sParam) {
+				var sPageURL = window.location.search.substring(1);
+				var sURLVariables = sPageURL.split('&');
+				for (var i = 0; i < sURLVariables.length; i++) {
+					var sParameterName = sURLVariables[i].split('=');
+					if (sParameterName[0] == sParam) {
+						return sParameterName[1];
+					}
+				}
+			}
+			function changeChannel(channel){
 				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 3);
 				var chat = document.getElementById('chatiframe')
 				chat.src='/chat-'+channel;
 
+				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('generalchan')
+				currentChat.style='';
+
 				var gotoChannel = document.getElementById(channel+'chan')
 				gotoChannel.style='background-color: #555;';
 
-				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('generalchan')
-				currentChat.style='';
+				var msgform = document.getElementById('msgform')
+				msgform.action= '/sendmsg/'+channel;
 
 				return false;
 			};
@@ -97,11 +110,19 @@ html(lang="fr")
 		.right_col
 			.messages
 				iframe(src="/chat-gen" id="chatiframe")
-			if user
-				form.msgform(action='/sendmsg' method='POST' enctype='multipart/form-data')
-					input(name='message' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2')
+			if user && !user.banned
+				form.msgform(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")
+					input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
 					button(type="submit" class='message_button')
 						i(class="fa fa-paper-plane")
+			else if user
+				.msgform
+					.disallowed
+						i(class="fa fa-exclamation-circle")
+						| &nbsp;
+						| Vous avez été banni du chat par un modérateur pour comportements innapropriés.
+						br
+						| Pour contester cette décision, contactez un administrateur.
 			else
 				.msgform
 					.disallowed

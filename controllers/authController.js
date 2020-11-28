@@ -2,12 +2,12 @@ const passport = require('passport');
 
 exports.login = passport.authenticate('local', {
 	failureRedirect: '/login?err=300',
-	successRedirect: '/window'
+	successRedirect: '/fs'
 });
 
 exports.logout = (req, res) => {
 	req.logout();
-	res.redirect('/window')
+	res.redirect('/fs')
 }
 
 exports.isLoggedIn = (req, res, next) => {

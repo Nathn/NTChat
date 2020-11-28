@@ -95,8 +95,8 @@ body {
 	position: relative;
 	bottom: 68px;
 	cursor: pointer;
-	width: fit-content;
-	height: fit-content;
+	width: 63px;
+	height: 68px;
 }
 
 .fullscreenbutton i {

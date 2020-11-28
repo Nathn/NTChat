@@ -9,13 +9,13 @@ html(lang="fr")
 		script(src='https://use.fontawesome.com/74eb59777f.js')
 
 	body
-		.backbutton(onclick=`window.location.href = '/window';`)
+		.backbutton(onclick=`window.location.href = '/fs';`)
 			i(class="fa fa-chevron-circle-left")
 		form.regform(action='/login' method='POST')
 			h2(class="header") Connexion à un compte
 			label(for='username') Nom d'utilisateur :
 			br
-			input(type='text' name='username' required)
+			input(type='text' name='username' required autofocus)
 			br
 			label(for='password') Mot de passe :
 			br

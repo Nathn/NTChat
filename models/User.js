@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
 	moderator: {
 		type: Boolean,
 		default: false
+	},
+	banned: {
+		type: Boolean,
+		default: false
 	}
 });
 

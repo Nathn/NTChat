@@ -9,8 +9,16 @@ html(lang="fr")
 		script(src='https://use.fontawesome.com/74eb59777f.js')
 
 	body
-		.message
-			.messagetext
-				| Bonjour ceci est un live chat sur les jeux video !!
-			.messageauthor
-				| Nathan - 14:27
+		each message in messages
+			.message
+				.messagetext
+					| #{message.text}
+				.messageauthor
+					| #{message.author.name} -
+					time(title=`${message.created}`)  #{message.formatcreated}
+					if user && user.moderator
+						|  -
+						a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000;")  Supprimer
+						if user._id.toString() != message.author._id.toString() && !message.author.banned
+							|  -
+							a(href=`/ban/${message.author._id}/jvs` style="text-decoration: none; color: #ff0000;")  Bannir

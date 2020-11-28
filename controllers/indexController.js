@@ -29,3 +29,13 @@ exports.doNotExistPage = async (req, res) => {
 
 }
 
+
+exports.fullscreenPage = async (req, res) => {
+	try {
+		res.render('window');
+	} catch (e) {
+		console.log(e);
+		res.redirect('/error')
+	}
+
+}
