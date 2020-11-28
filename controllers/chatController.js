@@ -4,6 +4,21 @@ const moment = require('moment');
 
 moment.locale('fr')
 
+exports.chatAnnoncesPage = async (req, res) => {
+	try {
+		const messages = await ChatMessage.find({
+				channel: 'ann'
+			}).populate('author').sort({
+				created: 'asc'
+			});
+		res.render('chat-annonces', {
+			messages
+		});
+	} catch (e) {
+		console.log(e);
+		res.redirect('/error')
+	}
+}
 
 exports.chatGeneralPage = async (req, res) => {
 	try {

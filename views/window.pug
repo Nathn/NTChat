@@ -6,9 +6,11 @@ html(lang="fr")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible", content="ie=edge")
 		link(rel='stylesheet' href='/windowstyle.css')
+		link(rel="shortcut icon" type="image/ico" href="/uploads/favicon.ico")
 		script(src='https://use.fontawesome.com/74eb59777f.js')
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
 		script(type="text/javascript").
+			originalHTML = ""
 			async function loadedPage(){
 				var content = ''
 				if (GetURLParameter('chan')) await changeChannel(GetURLParameter('chan'))
@@ -38,7 +40,24 @@ html(lang="fr")
 				gotoChannel.style='background-color: #555;';
 
 				var msgform = document.getElementById('msgform')
-				msgform.action= '/sendmsg/'+channel;
+				if (msgform) msgform.action= '/sendmsg/'+channel;
+
+				var isMod = document.getElementById('mod')
+				if (!isMod) {
+					if (channel == 'ann') {
+						if (msgform) msgform.style = "visibility: hidden"
+						var formplaceholder = document.getElementById('formplaceholder')
+						originalHTML = formplaceholder.innerHTML
+						formplaceholder.innerHTML = '<div class="disallowed"><i class="fa fa-exclamation-circle"></i>&nbsp;Ce salon est réservé aux modérateurs.</div>'
+					} else {
+						if (originalHTML) {
+							formplaceholder = document.getElementById('formplaceholder')
+							formplaceholder.innerHTML = originalHTML
+						}
+						var msgform = document.getElementById('msgform')
+						msgform.style = ""
+					}
+				}
 
 				return false;
 			};
@@ -84,11 +103,22 @@ html(lang="fr")
 				.account
 					i(class="fa fa-user-circle")
 					|  #{user.name}
+					if user.moderator
+						| &nbsp;
+						i(class="fa fa-flag" title="Modérateur" id="mod")
+					if user.dev
+						| &nbsp;
+						i(class="fa fa-code" title="Développeur" id="dev")
+					if user.banned
+						| &nbsp;
+						i(class="fa fa-ban" title="Utilisateur banni" id="ban")
 				input(type="button" onclick=`window.location.href = '/logout';` class='button logout_button' value='Déconnexion')
 			else
 				input(type="button" onclick=`window.location.href = '/register';` class='button register_button' value='Inscription')
 				input(type="button" onclick=`window.location.href = '/login';` class='button login_button' value='Connexion')
 			.channels
+				.channel(onclick="changeChannel('ann');" id="annchan")
+					| #Annonces
 				.channel(onclick="changeChannel('gen');" id="genchan" style="background-color: #555;")
 					| #General
 				.channel(onclick="changeChannel('jvs');" id="jvschan")
@@ -110,21 +140,20 @@ html(lang="fr")
 		.right_col
 			.messages
 				iframe(src="/chat-gen" id="chatiframe")
-			if user && !user.banned
-				form.msgform(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")
-					input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
-					button(type="submit" class='message_button')
-						i(class="fa fa-paper-plane")
-			else if user
-				.msgform
+			.msgform(id="formplaceholder")
+				if user && !user.banned
+					form(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")
+						input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
+						button(type="submit" class='message_button')
+							i(class="fa fa-paper-plane")
+				else if user
 					.disallowed
 						i(class="fa fa-exclamation-circle")
 						| &nbsp;
 						| Vous avez été banni du chat par un modérateur pour comportements innapropriés.
 						br
 						| Pour contester cette décision, contactez un administrateur.
-			else
-				.msgform
+				else
 					.disallowed
 						i(class="fa fa-exclamation-circle")
 						| &nbsp;

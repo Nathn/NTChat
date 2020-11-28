@@ -14,6 +14,7 @@ router.get('/chat-gen', chatController.chatGeneralPage);
 router.get('/chat-jvs', chatController.chatJvPage);
 router.get('/chat-mem', chatController.chatMemesPage);
 router.get('/chat-nsi', chatController.chatNsiPage);
+router.get('/chat-ann', chatController.chatAnnoncesPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
 router.get('/logout', authController.logout);
