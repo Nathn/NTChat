@@ -1,0 +1,22 @@
+mixin message(message, chan)
+	.message
+		.messagetext
+			| #{message.text}
+		.messageauthor
+			| #{message.author.name}
+			if message.author.moderator
+				| &nbsp;
+				i(class="fa fa-flag" title="Modérateur")
+			if message.author.dev
+				| &nbsp;
+				i(class="fa fa-code" title="Développeur")
+			if message.author.banned
+				| &nbsp;
+				i(class="fa fa-ban" title="Utilisateur banni")
+			time(title=`${message.created}`)  - #{message.formatcreated}
+			if user && user.moderator
+				|  -
+				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000;")  Supprimer
+				if user._id.toString() != message.author._id.toString() && !message.author.banned
+					|  -
+					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000;")  Bannir

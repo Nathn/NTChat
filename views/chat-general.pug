@@ -1,3 +1,4 @@
+include mixins/_message
 <!DOCTYPE html>
 html(lang="fr")
 	head
@@ -10,16 +11,5 @@ html(lang="fr")
 
 	body
 		each message in messages
-			.message
-				.messagetext
-					| #{message.text}
-				.messageauthor
-					| #{message.author.name} -
-					time(title=`${message.created}`)  #{message.formatcreated}
-					if user && user.moderator
-						|  -
-						a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000;")  Supprimer
-						if user._id.toString() != message.author._id.toString() && !message.author.banned
-							|  -
-							a(href=`/ban/${message.author._id}/gen` style="text-decoration: none; color: #ff0000;")  Bannir
+			+message(message, 'gen')
 
