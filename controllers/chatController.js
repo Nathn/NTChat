@@ -105,7 +105,7 @@ function formatHourMinutes(odate) {
 	let date = new Date(unix_timestamp);
 	var hours = date.getHours();
 	var minutes = "0" + date.getMinutes();
-	return hours + ':' + minutes.substr(-2)
+	return hours+1 + ':' + minutes.substr(-2)
 }
 
 
