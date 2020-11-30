@@ -17,6 +17,6 @@ mixin message(message, chan)
 			if user && user.moderator
 				|  -
 				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000;")  Supprimer
-				if user._id.toString() != message.author._id.toString() && !message.author.banned
+				if user._id.toString() != message.author._id.toString() && !message.author.banned && !message.author.moderator
 					|  -
 					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000;")  Bannir
