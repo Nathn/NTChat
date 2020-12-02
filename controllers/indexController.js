@@ -35,7 +35,16 @@ exports.fullscreenPage = async (req, res) => {
 		res.render('window');
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error')
+		res.render('error')
+	}
+
+}
+
+exports.errorPage = async (req, res) => {
+	try {
+		res.render('error');
+	} catch (e) {
+		console.log(e);
 	}
 
 }

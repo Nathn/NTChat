@@ -18,6 +18,7 @@ router.get('/chat-ann', chatController.chatAnnoncesPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
 router.get('/logout', authController.logout);
+router.get('/error', indexController.errorPage);
 router.get('/del/:id', chatController.deletemsg);
 router.get('/ban/:id/:channel', chatController.ban);
 
@@ -30,7 +31,10 @@ router.post('/register',
 	authController.login
 )
 router.post('/login', authController.login);
-router.post('/sendmsg/:channel', chatController.sendmsg);
+router.post('/sendmsg/:channel',
+	chatController.uploadImage,
+	chatController.sendmsg
+);
 
 
 

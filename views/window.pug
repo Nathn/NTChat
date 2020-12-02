@@ -95,6 +95,15 @@ html(lang="fr")
 				}
 				return false;
 			};
+			function getOutput() {
+				outputfile.innerHTML = '<i class="fa fa-plus-circle"></i> ' + uploadimg.value.replace(/.*[\/\\]/, '') + ' - <i class="fa fa-trash" title="Supprimer" onclick="clearInput()" style="color: #1091FF; cursor: pointer;"></i>';
+				return false;
+			}
+			function clearInput() {
+				outputfile.innerHTML = '';
+				uploadimg.value = ''
+				return false;
+			}
 
 
 	body(onload="loadedPage(); var params_state = false;")
@@ -144,8 +153,19 @@ html(lang="fr")
 				if user && !user.banned
 					form(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")
 						input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
+
+						label(for="uploadimg")
+							div(class='image_button' title="Ajouter une image" type="button")
+								i(class="fa fa-image icon-pic")
+						input(type="file" name="image" style="display: none;" id="uploadimg" accepts='image/*' onChange='getOutput();')
+
+						div(onclick=`window.location.href = '/code';` class='code_button' type="button" title="Ajouter du code")
+							i(class="fa fa-code")
+
 						button(type="submit" class='message_button')
 							i(class="fa fa-paper-plane")
+
+						div(id='outputfile' name='outputfile' style="padding-top: 2px;")
 				else if user
 					.disallowed
 						i(class="fa fa-exclamation-circle")

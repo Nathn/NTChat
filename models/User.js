@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema({
 		validate: [validator.isEmail, 'Invalid email']
 	},
 	avatar: String,
-	banner: String,
 	created: {
 		type: Date,
 		default: Date.now

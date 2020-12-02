@@ -2,6 +2,9 @@ mixin message(message, chan)
 	.message
 		.messagetext
 			| #{message.text}
+			if message.image
+				br
+				img(src=`${message.image}` style="max-height: 200px; border-radius: 3px;")
 		.messageauthor
 			| #{message.author.name}
 			if message.author.moderator
