@@ -13,7 +13,8 @@ exports.chatAnnoncesPage = async (req, res) => {
 				created: 'asc'
 			});
 		res.render('chat-annonces', {
-			messages
+			messages,
+			moment
 		});
 	} catch (e) {
 		console.log(e);
@@ -29,7 +30,8 @@ exports.chatGeneralPage = async (req, res) => {
 				created: 'asc'
 			});
 		res.render('chat-general', {
-			messages
+			messages,
+			moment
 		});
 	} catch (e) {
 		console.log(e);
@@ -45,7 +47,8 @@ exports.chatJvPage = async (req, res) => {
 				created: 'asc'
 			});
 		res.render('chat-jv', {
-			messages
+			messages,
+			moment
 		});
 	} catch (e) {
 		console.log(e);
@@ -61,7 +64,8 @@ exports.chatMemesPage = async (req, res) => {
 				created: 'asc'
 			});
 		res.render('chat-memes', {
-			messages
+			messages,
+			moment
 		});
 	} catch (e) {
 		console.log(e);
@@ -77,7 +81,8 @@ exports.chatNsiPage = async (req, res) => {
 				created: 'asc'
 			});
 		res.render('chat-nsi', {
-			messages
+			messages,
+			moment
 		});
 	} catch (e) {
 		console.log(e);
@@ -133,7 +138,6 @@ exports.sendmsg = async (req, res) => {
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
 		req.body.created = now_string
-		req.body.formatcreated = moment(now_date).fromNow()
 		const msg = new ChatMessage(req.body);
 		await msg.save();
 		res.redirect('/fs?chan='+req.params.channel);
@@ -141,14 +145,6 @@ exports.sendmsg = async (req, res) => {
 		console.log(e);
 		res.redirect('/fs?err=400')
 	}
-}
-
-function formatHourMinutes(odate) {
-	let unix_timestamp = Date.parse(odate)
-	let date = new Date(unix_timestamp);
-	var hours = date.getHours();
-	var minutes = "0" + date.getMinutes();
-	return hours+1 + ':' + minutes.substr(-2)
 }
 
 
