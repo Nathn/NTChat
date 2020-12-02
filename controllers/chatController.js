@@ -127,11 +127,13 @@ exports.sendmsg = async (req, res) => {
 		} else if (!req.body.text.replace(/\s/g, '').length) {
 			return res.redirect('back')
 		}
-		var now = new Date()
+		var now_string = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+		let now_date = new Date(now_string);
 		if (!req.user) res.redirect('/fs?err=100');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
-		req.body.formatcreated = formatHourMinutes(now)
+		req.body.created = now_string
+		req.body.formatcreated = moment(now_date).fromNow()
 		const msg = new ChatMessage(req.body);
 		await msg.save();
 		res.redirect('/fs?chan='+req.params.channel);
