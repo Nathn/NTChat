@@ -10,7 +10,7 @@ const msgSchema = new mongoose.Schema({
 	},
 	created: {
 		type: Date,
-		default: Date.now
+		default: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })
 	},
 	formatcreated: {
 		type: String,
