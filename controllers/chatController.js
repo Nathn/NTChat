@@ -133,7 +133,8 @@ exports.sendmsg = async (req, res) => {
 		} else if (!req.body.text.replace(/\s/g, '').length) {
 			return res.redirect('back')
 		}
-		if (!req.user) res.redirect('/fs?err=100');
+		if (!req.user) res.redirect('/fs');
+		if (req.params.channel && !user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
 		const msg = new ChatMessage(req.body);
