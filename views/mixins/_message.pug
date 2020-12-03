@@ -10,7 +10,7 @@ mixin message(message, chan)
 		else if message.code
 			pre.messagecode
 				| #{message.code}
-			button.copybutton(onclick=`window.location.href = "/copy/${message._id}"` style="outline: none;") Copier
+			button.copybutton(onclick=`window.location.href = "/copy/${message._id}"` style="outline: none; cursor: pointer;") Copier
 		.messageauthor
 			| #{message.author.name}
 			if message.author.moderator
