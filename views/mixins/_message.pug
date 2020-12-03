@@ -22,10 +22,10 @@ mixin message(message, chan)
 			if message.author.banned
 				| &nbsp;
 				i(class="fa fa-ban" title="Utilisateur banni")
-			time(title=`${moment(message.created)}`)  - #{moment(message.created).fromNow()}
+			time(title=`${moment(message.created)}`)  &middot; #{moment(message.created).fromNow()}
 			if user && user.moderator
-				|  -
+				|  &middot;
 				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000; outline: none;")  Supprimer
 				if user._id.toString() != message.author._id.toString() && !message.author.banned && !message.author.moderator
-					|  -
+					|  &middot;
 					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000; outline: none;")  Bannir
