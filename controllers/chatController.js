@@ -2,9 +2,9 @@ const User = require('../models/User');
 const ChatMessage = require('../models/ChatMessage');
 const cloudinary = require('cloudinary').v2;
 const moment = require('moment');
-const clipboardy = require('clipboardy');
+require("copy-paste").global();
 
-moment.locale('fr')
+moment.locale('fr');
 
 exports.chatAnnoncesPage = async (req, res) => {
 	try {
@@ -187,7 +187,7 @@ exports.copymsg = async (req, res) => {
 		channel = message.channel
 		if (message){
 			if (message.code){
-				clipboardy.writeSync(message.code);
+				copy(message.code)
 			}
 		}
 		res.redirect('/chat-'+channel);
