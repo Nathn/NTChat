@@ -22,6 +22,7 @@ router.get('/logout', authController.logout);
 router.get('/error', indexController.errorPage);
 router.get('/del/:id', chatController.deletemsg);
 router.get('/ban/:id/:channel', chatController.ban);
+router.get('/copy/:id', chatController.copymsg);
 
 router.get('/:something', indexController.doNotExistPage);
 

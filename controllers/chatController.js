@@ -2,6 +2,7 @@ const User = require('../models/User');
 const ChatMessage = require('../models/ChatMessage');
 const cloudinary = require('cloudinary').v2;
 const moment = require('moment');
+const clipboardy = require('clipboardy');
 
 moment.locale('fr')
 
@@ -172,6 +173,24 @@ exports.ban = async (req, res) => {
 			});
 		}
 		res.redirect('/chat-'+req.params.channel);
+	} catch (e) {
+		console.log(e);
+		res.redirect('/error')
+	}
+}
+
+exports.copymsg = async (req, res) => {
+	try {
+		const message = await ChatMessage.findOne({
+				_id: req.params.id
+			});
+		channel = message.channel
+		if (message){
+			if (message.code){
+				clipboardy.writeSync(message.code);
+			}
+		}
+		res.redirect('/chat-'+channel);
 	} catch (e) {
 		console.log(e);
 		res.redirect('/error')
