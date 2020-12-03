@@ -22,6 +22,19 @@ body {
 	padding-bottom:5px;
 	padding-left: 5px;
 }
+
+.messagecode {
+	font-size: 0.9rem;
+	padding: 5px;
+	margin: 0 3px 3px;
+	font-family: Consolas;
+	color: #97e6fe;
+	background-color: #213442;
+	border-radius: 3px;
+	-moz-tab-size: 4;
+	tab-size: 4;
+}
+
 .messageauthor {
 	padding-top: 5px;
 	font-size: 0.8rem;

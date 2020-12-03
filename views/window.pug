@@ -42,6 +42,9 @@ html(lang="fr")
 				var msgform = document.getElementById('msgform')
 				if (msgform) msgform.action= '/sendmsg/'+channel;
 
+				var codelink = document.getElementById('codelink')
+				if (codelink) codelink.href = '/code/'+channel
+
 				var isMod = document.getElementById('mod')
 				if (!isMod) {
 					if (channel == 'ann') {
@@ -159,8 +162,9 @@ html(lang="fr")
 								i(class="fa fa-image icon-pic")
 						input(type="file" name="image" style="display: none;" id="uploadimg" accepts='image/*' onChange='getOutput();')
 
-						div(onclick=`window.location.href = '/code';` class='code_button' type="button" title="Ajouter du code")
-							i(class="fa fa-code")
+						a(id='codelink' href="/code/gen" style="text-decoration: none; color: #D7D5D9; outline: none;")
+							div(id='codebutton' class='code_button' type="button" title="Ajouter du code")
+								i(class="fa fa-code")
 
 						button(type="submit" class='message_button')
 							i(class="fa fa-paper-plane")

@@ -42,11 +42,12 @@ body {
 	box-sizing: border-box;
 }
 
+
 .regform * {
     box-sizing: border-box;
 }
 .regform h2{
-  	text-align: center;
+	text-align: center;
   	margin-bottom: 15%;
 }
 
@@ -59,25 +60,75 @@ body {
   	width: 100%;
 	border: 1px solid #aaa;
 	border-radius: 8px;
+	outline: none;
 }
 
 .regform label {
-  color: #aaa;
-  font-size: 1em;
-  font-weight: bold;
+	color: #aaa;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 
 .regform button[type=submit] {
-  display: block;
-  margin: 15% auto 0;
-  width: 150px;
-  height: 40px;
-  border-radius: 25px;
-  border: 1px solid #aaa;
-  color: #2F3136;
-  font-weight: 700;
-  box-shadow: 1px 4px 10px 1px #aaa;
+  	display: block;
+  	margin: 15% auto 0;
+  	width: 150px;
+  	height: 40px;
+  	border-radius: 25px;
+  	border: 1px solid #aaa;
+  	color: #2F3136;
+  	font-weight: 700;
+  	box-shadow: 1px 4px 10px 1px #aaa;
+	outline: none;
+}
+
+.codeform {
+	position: absolute;
+	top:10%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	vertical-align: middle;
+	width: 70%;
+	height: 80%;
+	margin: 0 auto;
+	padding: 20px 50px 40px 50px;
+	border: 2px solid #aaa;
+	border-radius: 8px;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+
+.codeform textarea {
+	display: block;
+	width: 100%;
+	height: 90%;
+  	border-radius: 10px;
+  	border: 1px solid #aaa;
+	color: #eee;
+	background-color: #36393F;
+	outline: none;
+	padding:5px;
+	font-size: 16px;
+	font-family: Consolas;
+}
+
+.codeform * {
+    box-sizing: border-box;
+}
+
+.codeform button[type=submit] {
+	display: block;
+	margin: 15px auto 0;
+	width: 150px;
+	height: 40px;
+  	border-radius: 25px;
+  	border: 1px solid #aaa;
+  	color: #2F3136;
+  	font-weight: 700;
+	box-shadow: 1px 4px 10px 1px #aaa;
+	outline: none;
 }
 
 .backbutton {

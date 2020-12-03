@@ -4,17 +4,16 @@ const msgSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
+	code: {
+		type: String
+	},
 	channel: {
 		type: String,
 		trim: true
 	},
 	created: {
 		type: Date,
-		default: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })
-	},
-	formatcreated: {
-		type: String,
-		trim: true
+		default: new Date()
 	},
 	author: {
 		type: mongoose.Schema.ObjectId,

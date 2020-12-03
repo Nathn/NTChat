@@ -123,6 +123,7 @@ body {
 	margin-top:10px;
 	margin-left: 5%;
 	width: 90%;
+	outline: none;
 }
 
 .msgform {
@@ -138,6 +139,7 @@ body {
 	padding: 5px 7px;
 	width:80%;
 	height: 90%;
+	outline: none;
 }
 
 .image_button,
@@ -152,6 +154,7 @@ body {
 	display: inline-block;
 }
 
+
 .message_button {
 	position: relative;
 	border: 2px solid #add8e6;
@@ -161,6 +164,7 @@ body {
 	width: 7%;
 	margin-left: 5px;
 	cursor: pointer;
+	outline: none;
 }
 
 .disallowed {

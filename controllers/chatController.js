@@ -110,7 +110,7 @@ exports.uploadImage = async (req, res, next) => {
 					)
 				} catch (e) {
 					console.log(e);
-					res.redirect('/?err=103')
+					res.redirect('/error')
 				}
 			}
 			next();
@@ -174,6 +174,25 @@ exports.ban = async (req, res) => {
 		res.redirect('/chat-'+req.params.channel);
 	} catch (e) {
 		console.log(e);
-		res.redirect('/fs?err=400')
+		res.redirect('/error')
+	}
+}
+
+exports.postcode = async (req, res) => {
+	try {
+		if (!req.body.code) {
+			return res.redirect('back')
+		} else if (!req.body.code.replace(/\s/g, '').length) {
+			return res.redirect('back')
+		}
+		if (!req.user) res.redirect('/fs');
+		req.body.author = req.user._id;
+		req.body.channel = req.params.channel;
+		const msg = new ChatMessage(req.body);
+		await msg.save();
+		res.redirect('/fs?chan='+req.params.channel);
+	} catch (e) {
+		console.log(e);
+		res.redirect('/error')
 	}
 }

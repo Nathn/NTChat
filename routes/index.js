@@ -17,6 +17,7 @@ router.get('/chat-nsi', chatController.chatNsiPage);
 router.get('/chat-ann', chatController.chatAnnoncesPage);
 router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
+router.get('/code/:channel', indexController.codePage);
 router.get('/logout', authController.logout);
 router.get('/error', indexController.errorPage);
 router.get('/del/:id', chatController.deletemsg);
@@ -34,6 +35,9 @@ router.post('/login', authController.login);
 router.post('/sendmsg/:channel',
 	chatController.uploadImage,
 	chatController.sendmsg
+);
+router.post('/postcode/:channel',
+	chatController.postcode
 );
 
 

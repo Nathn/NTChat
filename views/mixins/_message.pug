@@ -1,10 +1,15 @@
 mixin message(message, chan)
 	.message
-		.messagetext
-			| #{message.text}
-			if message.image
+		if message.text
+			.messagetext
+				| #{message.text}
+		else if message.code
+			pre.messagecode
+				| #{message.code}
+		if message.image
+			if message.text
 				br
-				img(src=`${message.image}` style="max-width: 500px; max-height: 300px; border-radius: 3px;")
+			img(src=`${message.image}` style="max-width: 500px; max-height: 300px; border-radius: 3px;")
 		.messageauthor
 			| #{message.author.name}
 			if message.author.moderator
@@ -16,10 +21,10 @@ mixin message(message, chan)
 			if message.author.banned
 				| &nbsp;
 				i(class="fa fa-ban" title="Utilisateur banni")
-			time(title=`${message.created}`)  - #{moment(new Date(message.created)).fromNow()}
+			time(title=`${moment(message.created)}`)  - #{moment(message.created).fromNow()}
 			if user && user.moderator
 				|  -
-				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000;")  Supprimer
+				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000; outline: none;")  Supprimer
 				if user._id.toString() != message.author._id.toString() && !message.author.banned && !message.author.moderator
 					|  -
-					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000;")  Bannir
+					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000; outline: none;")  Bannir

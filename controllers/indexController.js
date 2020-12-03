@@ -48,3 +48,15 @@ exports.errorPage = async (req, res) => {
 	}
 
 }
+
+exports.codePage = async (req, res) => {
+	try {
+		const channel = req.params.channel;
+		res.render('code', {
+			channel
+		});
+	} catch (e) {
+		console.log(e);
+	}
+
+}
