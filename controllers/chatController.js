@@ -98,7 +98,7 @@ exports.uploadImage = async (req, res, next) => {
 				try {
 					await cloudinary.uploader.upload(image.tempFilePath,
 						{format: 'png', transformation: [
-  							{width: 200, crop: "scale"}
+  							{width: 500, crop: "scale"}
   						]},
 						async function (err, result) {
 							console.log(result, err)
