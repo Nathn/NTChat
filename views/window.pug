@@ -15,7 +15,7 @@ html(lang="fr")
 				var content = ''
 				if (GetURLParameter('chan')) await changeChannel(GetURLParameter('chan'))
 				await updateChat()
-				refresh = setInterval(updateChat, 3000)
+				refresh = await setInterval(updateChat, 3000)
 				return false;
 			};
 			function GetURLParameter(sParam) {
@@ -80,7 +80,7 @@ html(lang="fr")
 					}
 				});
 				chat.onload = function () {
-					chatiframe.contentWindow.scrollTo(0, chat.scrollHeight);
+					chatiframe.contentWindow.scrollTo(0, 999999);
 				}
 				return false;
 			};
