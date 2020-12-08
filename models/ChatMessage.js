@@ -4,6 +4,10 @@ const msgSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
+	content: {
+		type: String,
+		trim: true
+	},
 	code: {
 		type: String
 	},

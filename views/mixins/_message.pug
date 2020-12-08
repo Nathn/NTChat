@@ -2,7 +2,7 @@ mixin message(message, chan)
 	.message
 		if message.text || message.image
 			.messagetext
-				| #{message.text}
+				| !{message.content || message.text}
 				if message.image
 					if message.text
 						br

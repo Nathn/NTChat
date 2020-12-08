@@ -124,6 +124,29 @@ exports.uploadImage = async (req, res, next) => {
 	}
 }
 
+function html(str) {
+	var replacedText, replacePattern1, replacePattern2, replacePattern3, replacePattern4, replacePattern5;
+
+	//URLs starting with http://, https://, or ftp://
+	replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+	replacedText = str.replace(replacePattern1, `<a href="$1" target="_blank" style="text-decoration: none; color: #3ca4ff;">$1</a>`);
+
+	//URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+	replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+	replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank" style="text-decoration: none; color: #3ca4ff;">$2</a>');
+
+	replacePattern3 = /\*\*([^]+)\*\*/gim;
+	replacedText = replacedText.replace(replacePattern3, '<b>$1</b>')
+
+	replacePattern4 = /\*([^*]+)\*/gim;
+	replacedText = replacedText.replace(replacePattern4, '<i>$1</i>')
+
+	replacePattern5 = /\`([^`]+)\`/gim;
+	replacedText = replacedText.replace(replacePattern5, '<code>$1</code>')
+
+	return replacedText
+}
+
 exports.sendmsg = async (req, res) => {
 	try {
 		if (req.imageurl) {
@@ -137,6 +160,7 @@ exports.sendmsg = async (req, res) => {
 		if (req.params.channel && !req.user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
+		if (req.body.text) req.body.content = html(req.body.text.replace(/\</g, "&lt;").replace(/\>/g, "&gt;"))
 		const msg = new ChatMessage(req.body);
 		await msg.save();
 		res.redirect('/fs?chan='+req.params.channel);
