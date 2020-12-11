@@ -121,6 +121,9 @@ html(lang="fr")
 					if user.dev
 						| &nbsp;
 						i(class="fa fa-code" title="Développeur" id="dev")
+					if message.author.bughunter
+						| &nbsp;
+						i(class="fa fa-bug" title="Chasseur de bugs")
 					if user.banned
 						| &nbsp;
 						i(class="fa fa-ban" title="Utilisateur banni" id="ban")

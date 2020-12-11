@@ -19,6 +19,9 @@ mixin message(message, chan)
 			if message.author.dev
 				| &nbsp;
 				i(class="fa fa-code" title="Développeur")
+			if message.author.bughunter
+				| &nbsp;
+				i(class="fa fa-bug" title="Chasseur de bugs")
 			if message.author.banned
 				| &nbsp;
 				i(class="fa fa-ban" title="Utilisateur banni")

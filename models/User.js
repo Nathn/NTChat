@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	bughunter: {
+		type: Boolean,
+		default: false
+	},
 	banned: {
 		type: Boolean,
 		default: false
