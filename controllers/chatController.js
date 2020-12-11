@@ -8,11 +8,15 @@ moment.locale('fr');
 
 exports.chatAnnoncesPage = async (req, res) => {
 	try {
-		const messages = await ChatMessage.find({
+		var messages = await ChatMessage.find({
 				channel: 'ann'
 			}).populate('author').sort({
 				created: 'asc'
 			});
+		function filter_users(message) {
+				return message.author.moderator == true;
+			}
+		messages = messages.filter(filter_users);
 		res.render('chat-annonces', {
 			messages,
 			moment
@@ -157,7 +161,7 @@ exports.sendmsg = async (req, res) => {
 			return res.redirect('back')
 		}
 		if (!req.user) res.redirect('/fs');
-		if (req.params.channel && !req.user.moderator) res.redirect('/fs');
+		if (req.params.channel=='ann' && !req.user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
 		if (req.body.text) req.body.content = html(req.body.text.replace(/\</g, "&lt;").replace(/\>/g, "&gt;"))
