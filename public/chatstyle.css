@@ -4,7 +4,9 @@ body {
 	word-break: break-word;
 	color: #D7D5D9;
 	background-color: #36393F;
+	overflow-x: hidden;
 }
+
 
 .message {
 	padding-top: 10px;

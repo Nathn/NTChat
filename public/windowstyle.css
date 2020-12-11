@@ -110,6 +110,7 @@ body {
 	border: 3px solid #ccc;
 	height: 35px;
 	font-family: Inter;
+	outline: none;
 }
 
 .button:hover {
