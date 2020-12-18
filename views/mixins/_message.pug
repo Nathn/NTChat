@@ -12,12 +12,10 @@ mixin message(message, chan)
 				| #{message.code}
 
 			// Very bad solution but the only one I found...
-			//iframe(src=`https://nathn.github.io/copybutton?code=${message.code}` style="height: 30px; width:auto; border: none; margin-left: 5px")
+			// iframe(src=`https://nathn.github.io/copybutton?code=${message.code}` style="height: 30px; width:auto; border: none; margin-left: 5px")
 
-			form(method="POST" action="https://nathn.github.io/copybutton")
-				textarea(name="code" style="display: none;")
-					| #{message.code}
-				button.copybutton(type="submit" style="outline: none; cursor: pointer;") Copier
+			// button.copybutton(style="outline: none; cursor: pointer;" onclick=`copy("${message.code}");`) Copier
+
 		.messageauthor
 			| #{message.author.name}
 			if message.author.moderator

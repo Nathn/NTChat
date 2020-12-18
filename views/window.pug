@@ -80,7 +80,10 @@ html(lang="fr")
 					}
 				});
 				chat.onload = function () {
-					chatiframe.contentWindow.scrollTo(0, 999999);
+					var chat = document.getElementById('chatiframe');
+					if (chat.src.startsWith('http://chat.nathn.tech') || chat.src.startsWith('http://localhost')) {
+						chatiframe.contentWindow.scrollTo(0, 999999);
+					}
 				}
 				return false;
 			};
