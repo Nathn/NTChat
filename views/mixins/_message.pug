@@ -10,7 +10,14 @@ mixin message(message, chan)
 		else if message.code
 			pre.messagecode
 				| #{message.code}
-			button.copybutton(onclick=`window.location.href = "/copy/${message._id}"` style="outline: none; cursor: pointer;") Copier
+
+			// Very bad solution but the only one I found...
+			//iframe(src=`https://nathn.github.io/copybutton?code=${message.code}` style="height: 30px; width:auto; border: none; margin-left: 5px")
+
+			form(method="POST" action="https://nathn.github.io/copybutton")
+				textarea(name="code" style="display: none;")
+					| #{message.code}
+				button.copybutton(type="submit" style="outline: none; cursor: pointer;") Copier
 		.messageauthor
 			| #{message.author.name}
 			if message.author.moderator
