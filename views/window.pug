@@ -10,7 +10,7 @@ html(lang="fr")
 		script(src='https://use.fontawesome.com/74eb59777f.js')
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
 		script(type="text/javascript").
-			originalHTML = ""
+			var originalHTML = ""
 			async function loadedPage(){
 				var content = ''
 				if (GetURLParameter('chan')) await changeChannel(GetURLParameter('chan'))
@@ -30,10 +30,10 @@ html(lang="fr")
 			}
 			function changeChannel(channel){
 				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 3);
-				var chat = document.getElementById('chatiframe')
-				chat.src='/chat-'+channel;
+				document.getElementById('chatiframe').src='/chat?chan='+channel;
+				console.log(`Channel change : ${currentChannel} to ${channel}`)
 
-				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('generalchan')
+				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('genchan')
 				currentChat.style='';
 
 				var gotoChannel = document.getElementById(channel+'chan')
@@ -135,16 +135,13 @@ html(lang="fr")
 				input(type="button" onclick=`window.location.href = '/register';` class='button register_button' value='Inscription')
 				input(type="button" onclick=`window.location.href = '/login';` class='button login_button' value='Connexion')
 			.channels
-				.channel(onclick="changeChannel('ann');" id="annchan")
-					| #Annonces
-				.channel(onclick="changeChannel('gen');" id="genchan" style="background-color: #555;")
-					| #General
-				.channel(onclick="changeChannel('jvs');" id="jvschan")
-					| #Jeux-video
-				.channel(onclick="changeChannel('mem');" id="memchan")
-					| #Memes
-				.channel(onclick="changeChannel('nsi');" id="nsichan")
-					| #NSI
+				each chan in channelsList
+					if chan.default
+						.channel(onclick=`changeChannel('${chan.selector}');` id=`${chan.selector}chan` style="background-color: #555;")
+							| ##{chan.name}
+					else
+						.channel(onclick=`changeChannel('${chan.selector}');` id=`${chan.selector}chan`)
+							| ##{chan.name}
 			//- .param_button(onclick="showParams();" id="param_button")
 				| Paramètres
 			//- .params(style="visibility: hidden;" id="params" onload="var params_state = false;")
@@ -157,7 +154,7 @@ html(lang="fr")
 
 		.right_col
 			.messages
-				iframe(src="/chat-gen" id="chatiframe")
+				iframe(src="/chat?chan=gen" id="chatiframe")
 			.msgform(id="formplaceholder")
 				if user && !user.banned
 					form(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")

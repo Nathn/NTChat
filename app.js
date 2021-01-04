@@ -6,7 +6,7 @@ const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
-const nodemailer = require('nodemailer');
+const MongoStore = require('connect-mongo')(session);
 const expressValidator = require('express-validator');
 
 
@@ -39,7 +39,11 @@ mongoose.connection.on('error', (err) => {
 
 // Express session
 app.use(session({
-	secret: process.env.SECRET
+	secret: process.env.SECRET,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection
+	}),
+	cookie: { maxAge: 60000 }
 }));
 
 app.use(fileupload({

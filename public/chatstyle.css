@@ -52,3 +52,8 @@ body {
 	margin-left: 5px;
 	border: 2px solid #D7D5D9;
 }
+
+.link {
+	text-decoration: none;
+	color: #3ca4ff;
+}

@@ -1,92 +1,35 @@
 const User = require('../models/User');
 const ChatMessage = require('../models/ChatMessage');
+const Channel = require('../models/Channel');
 const cloudinary = require('cloudinary').v2;
 const moment = require('moment');
 require("copy-paste").global();
 
 moment.locale('fr');
 
-exports.chatAnnoncesPage = async (req, res) => {
+exports.chatPage = async (req, res) => {
 	try {
+		if (!req.query.chan) return res.render('error')
+		var channelsList = await Channel.find()
+		var channel = await Channel.findOne({
+			selector: req.query.chan
+		})
+		if (!channel) return res.render('error')
 		var messages = await ChatMessage.find({
-				channel: 'ann'
+				channel: req.query.chan
 			}).populate('author').sort({
 				created: 'asc'
 			});
-		function filter_users(message) {
+		if (req.query.chan == 'ann') {
+			function filter_users(message) {
 				return message.author.moderator == true;
 			}
-		messages = messages.filter(filter_users);
-		res.render('chat-annonces', {
+			messages = messages.filter(filter_users);
+		}
+		res.render('chat', {
 			messages,
-			moment
-		});
-	} catch (e) {
-		console.log(e);
-		res.render('error')
-	}
-}
-
-exports.chatGeneralPage = async (req, res) => {
-	try {
-		const messages = await ChatMessage.find({
-				channel: 'gen'
-			}).populate('author').sort({
-				created: 'asc'
-			});
-		res.render('chat-general', {
-			messages,
-			moment
-		});
-	} catch (e) {
-		console.log(e);
-		res.render('error')
-	}
-}
-
-exports.chatJvPage = async (req, res) => {
-	try {
-		const messages = await ChatMessage.find({
-				channel: 'jvs'
-			}).populate('author').sort({
-				created: 'asc'
-			});
-		res.render('chat-jv', {
-			messages,
-			moment
-		});
-	} catch (e) {
-		console.log(e);
-		res.render('error')
-	}
-}
-
-exports.chatMemesPage = async (req, res) => {
-	try {
-		const messages = await ChatMessage.find({
-				channel: 'mem'
-			}).populate('author').sort({
-				created: 'asc'
-			});
-		res.render('chat-memes', {
-			messages,
-			moment
-		});
-	} catch (e) {
-		console.log(e);
-		res.render('error')
-	}
-}
-
-exports.chatNsiPage = async (req, res) => {
-	try {
-		const messages = await ChatMessage.find({
-				channel: 'nsi'
-			}).populate('author').sort({
-				created: 'asc'
-			});
-		res.render('chat-nsi', {
-			messages,
+			channel,
+			channelsList: channelsList,
 			moment
 		});
 	} catch (e) {
@@ -128,16 +71,16 @@ exports.uploadImage = async (req, res, next) => {
 	}
 }
 
-function html(str) {
+async function html(str, channels) {
 	var replacedText, replacePattern1, replacePattern2, replacePattern3, replacePattern4, replacePattern5;
 
 	//URLs starting with http://, https://, or ftp://
 	replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-	replacedText = str.replace(replacePattern1, `<a href="$1" target="_blank" style="text-decoration: none; color: #3ca4ff;">$1</a>`);
+	replacedText = str.replace(replacePattern1, `<a href="$1" target="_blank" class="link">$1</a>`);
 
 	//URLs starting with "www." (without // before it, or it'd re-link the ones done above).
 	replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-	replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank" style="text-decoration: none; color: #3ca4ff;">$2</a>');
+	replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank" class="link">$2</a>');
 
 	replacePattern3 = /\*\*([^]+)\*\*/gim;
 	replacedText = replacedText.replace(replacePattern3, '<b>$1</b>')
@@ -147,6 +90,25 @@ function html(str) {
 
 	replacePattern5 = /\`([^`]+)\`/gim;
 	replacedText = replacedText.replace(replacePattern5, '<code>$1</code>')
+
+	var chanList = "\\B\\#(";
+	for (let i=0; i < channels.length; i++) {
+		chanList += channels[i].name.toLowerCase();
+		if (i != channels.length-1) chanList += "|"
+	}
+	chanList += ")\\b"
+	console.log(chanList)
+	replacedText = await replacedText.replace(new RegExp(chanList, "gim"), function (match, input) {
+		for (let i=0; i < channels.length; i++) {
+			if (input.toLowerCase() == channels[i].name.toLowerCase()) chan =  channels[i]
+			if (i != channels.length-1) chanList += "|"
+		}
+		if (chan) var chanselector = chan.selector
+		console.log(chanselector)
+		var post = match
+		if (chanselector) post = `<a onclick="parent.changeChannel('${chanselector}')" class="link">${match}</a>`;
+		return post;
+	})
 
 	return replacedText
 }
@@ -164,7 +126,8 @@ exports.sendmsg = async (req, res) => {
 		if (req.params.channel=='ann' && !req.user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
-		if (req.body.text) req.body.content = html(req.body.text.replace(/\</g, "&lt;").replace(/\>/g, "&gt;"))
+		var channels = await Channel.find()
+		if (req.body.text) req.body.content = await html(req.body.text.replace(/\</g, "&lt;").replace(/\>/g, "&gt;"), channels)
 		const msg = new ChatMessage(req.body);
 		await msg.save();
 		res.redirect('/fs?chan='+req.params.channel);
@@ -184,7 +147,7 @@ exports.deletemsg = async (req, res) => {
 		if (req.user && req.user.moderator && message){
 			await ChatMessage.deleteOne(message);
 		}
-		res.redirect('/chat-'+channel);
+		res.redirect('/chat?chan='+channel);
 	} catch (e) {
 		console.log(e);
 		res.redirect('/fs?err=400')
@@ -201,7 +164,7 @@ exports.ban = async (req, res) => {
 				banned: true
 			});
 		}
-		res.redirect('/chat-'+req.params.channel);
+		res.redirect('/chat?chan='+req.params.channel);
 	} catch (e) {
 		console.log(e);
 		res.redirect('/error')

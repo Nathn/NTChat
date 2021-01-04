@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Message = require('../models/ChatMessage');
+const Channel = require('../models/Channel');
 const moment = require('moment');
 
 moment.locale('fr')
@@ -32,7 +33,12 @@ exports.doNotExistPage = async (req, res) => {
 
 exports.fullscreenPage = async (req, res) => {
 	try {
-		res.render('window');
+		var channelsList = await Channel.find().sort({
+			rank: 1
+		})
+		res.render('window', {
+			channelsList
+		});
 	} catch (e) {
 		console.log(e);
 		res.render('error')
