@@ -3,7 +3,7 @@ const ChatMessage = require('../models/ChatMessage');
 const Channel = require('../models/Channel');
 const cloudinary = require('cloudinary').v2;
 const moment = require('moment');
-require("copy-paste").global();
+// require("copy-paste").global();
 
 moment.locale('fr');
 
@@ -170,7 +170,7 @@ exports.ban = async (req, res) => {
 		res.redirect('/error')
 	}
 }
-
+/*
 exports.copymsg = async (req, res) => {
 	try {
 		const message = await ChatMessage.findOne({
@@ -188,7 +188,7 @@ exports.copymsg = async (req, res) => {
 		res.redirect('/error')
 	}
 }
-
+*/
 exports.postcode = async (req, res) => {
 	try {
 		if (!req.body.code) {
