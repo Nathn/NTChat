@@ -122,7 +122,7 @@ exports.sendmsg = async (req, res) => {
 		} else if (!req.body.text.replace(/\s/g, '').length) {
 			return res.redirect('back')
 		}
-		if (!req.user) res.redirect('/fs');
+		if (!req.user) return res.redirect('/fs');
 		if (req.params.channel=='ann' && !req.user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
@@ -143,7 +143,7 @@ exports.deletemsg = async (req, res) => {
 		const message = await ChatMessage.findOne({
 				_id: req.params.id
 			});
-		channel = message.channel
+		if (message) channel = message.channel
 		if (req.user && req.user.moderator && message){
 			await ChatMessage.deleteOne(message);
 		}
@@ -157,7 +157,7 @@ exports.deletemsg = async (req, res) => {
 exports.ban = async (req, res) => {
 	try {
 		if (req.user && req.user.moderator){
-			const userToBan = await User.findOneAndUpdate({
+			await User.findOneAndUpdate({
 				_id: req.params.id
 			},
 			{
@@ -196,7 +196,7 @@ exports.postcode = async (req, res) => {
 		} else if (!req.body.code.replace(/\s/g, '').length) {
 			return res.redirect('back')
 		}
-		if (!req.user) res.redirect('/fs');
+		if (!req.user) return res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
 		const msg = new ChatMessage(req.body);

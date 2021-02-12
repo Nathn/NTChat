@@ -1,14 +1,6 @@
 // Importing the model for use on this controller
 const User = require('../models/User');
-const Message = require('../models/ChatMessage');
 const promisify = require('es6-promisify');
-const moment = require('moment');
-const multer = require('multer');
-const jimp = require('jimp');
-const uuid = require('uuid');
-const cloudinary = require('cloudinary').v2;
-const nodemailer = require('nodemailer');
-const clipboardy = require('clipboardy');
 
 
 require('dotenv').config({

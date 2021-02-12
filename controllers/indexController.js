@@ -1,5 +1,3 @@
-const User = require('../models/User');
-const Message = require('../models/ChatMessage');
 const Channel = require('../models/Channel');
 const moment = require('moment');
 
