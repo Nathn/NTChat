@@ -2,6 +2,11 @@ h3
 	| une erreur vraiment innatendue est suvenue,
 	|  si vous étiez en train de pousser l'application à ses limites bah vous l'avez bien cherché,
 	|  sinon contactez moi tout de suite avec
-	b  la procédure pour reproduire l'erreur
+	| la procédure pour reproduire l'erreur ainsi que le message ci-dessous
 	|  à l'adresse
-	a(href="mailto:nathan@tranchant.fr")  nathan@tranchant.fr
+	| &nbsp;
+	a(href="mailto:nathan@tranchant.fr") nathan@tranchant.fr
+	br
+	br
+	span(style="color: red")
+		| Error : #{errormsg}

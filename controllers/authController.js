@@ -12,7 +12,9 @@ exports.logout = (req, res) => {
 
 exports.isLoggedIn = (req, res, next) => {
 	if (!req.isAuthenticated()) {
-		res.render('error');
+		res.render('error', {
+			errormsg: 'Not logged in'
+		});
 		return;
 	}
 

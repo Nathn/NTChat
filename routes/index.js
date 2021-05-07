@@ -15,7 +15,6 @@ router.get('/login', userController.loginPage);
 router.get('/register', userController.registerPage);
 router.get('/code/:channel', indexController.codePage);
 router.get('/logout', authController.logout);
-router.get('/error', indexController.errorPage);
 router.get('/del/:id', chatController.deletemsg);
 router.get('/ban/:id/:channel', chatController.ban);
 // router.get('/copy/:id', chatController.copymsg);

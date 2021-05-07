@@ -10,7 +10,9 @@ exports.indexPage = async (req, res) => {
 		res.render('index');
 	} catch (e) {
 		console.log(e);
-		res.render('error');
+		res.render('error', {
+			errormsg: e
+		});
 	}
 
 }
@@ -23,7 +25,9 @@ exports.doNotExistPage = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.render('error');
+		res.render('error', {
+			errormsg: e
+		});
 	}
 
 }
@@ -39,16 +43,9 @@ exports.fullscreenPage = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.render('error')
-	}
-
-}
-
-exports.errorPage = async (req, res) => {
-	try {
-		res.render('error');
-	} catch (e) {
-		console.log(e);
+		res.render('error', {
+			errormsg: e
+		});
 	}
 
 }

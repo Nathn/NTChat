@@ -9,12 +9,16 @@ moment.locale('fr');
 
 exports.chatPage = async (req, res) => {
 	try {
-		if (!req.query.chan) return res.render('error')
+		if (!req.query.chan) return res.render('error', {
+			errormsg: 'No channel selected'
+		});
 		var channelsList = await Channel.find()
 		var channel = await Channel.findOne({
 			selector: req.query.chan
 		})
-		if (!channel) return res.render('error')
+		if (!channel) return res.render('error', {
+			errormsg: 'Selected channel not found'
+		});
 		var messages = await ChatMessage.find({
 				channel: req.query.chan
 			}).populate('author').sort({
@@ -34,7 +38,9 @@ exports.chatPage = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.render('error')
+		res.render('error', {
+			errormsg: e
+		});
 	}
 }
 
@@ -58,7 +64,9 @@ exports.uploadImage = async (req, res, next) => {
 					)
 				} catch (e) {
 					console.log(e);
-					res.redirect('/error')
+					res.render('error', {
+						errormsg: e
+					});
 				}
 			}
 			next();
@@ -67,7 +75,9 @@ exports.uploadImage = async (req, res, next) => {
 		}
 	} catch (e) {
 		console.log(e);
-		res.render('error')
+		res.render('error', {
+			errormsg: e
+		});
 	}
 }
 
@@ -167,7 +177,9 @@ exports.ban = async (req, res) => {
 		res.redirect('/chat?chan='+req.params.channel);
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error')
+		res.render('error', {
+						errormsg: e
+					});
 	}
 }
 /*
@@ -185,7 +197,9 @@ exports.copymsg = async (req, res) => {
 		res.redirect('/chat-'+channel);
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error')
+		res.render('error', {
+						errormsg: e
+					});
 	}
 }
 */
@@ -204,6 +218,8 @@ exports.postcode = async (req, res) => {
 		res.redirect('/fs?chan='+req.params.channel);
 	} catch (e) {
 		console.log(e);
-		res.redirect('/error')
+		res.render('error', {
+			errormsg: e
+		});
 	}
 }
