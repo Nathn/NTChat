@@ -13,9 +13,8 @@ html(lang="fr")
 			var originalHTML = ""
 			async function loadedPage(){
 				var content = ''
-				if (GetURLParameter('chan')) await changeChannel(GetURLParameter('chan'))
 				await updateChat()
-				refresh = await setInterval(updateChat, 3000)
+				refresh = await setInterval(updateChat, 2000)
 				return false;
 			};
 			function GetURLParameter(sParam) {
@@ -28,9 +27,11 @@ html(lang="fr")
 					}
 				}
 			}
-			function changeChannel(channel){
-				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 3);
-				document.getElementById('chatiframe').src='/chat?chan='+channel;
+			function changeChannel(channel, modonly){
+
+				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 7).substring(0,3);
+				document.getElementById('chatiframe').src='/chat?chan='+channel+"#end";
+
 				console.log(`Channel change : ${currentChannel} to ${channel}`)
 
 				var currentChat = document.getElementById(currentChannel+'chan') || document.getElementById('genchan')
@@ -47,7 +48,7 @@ html(lang="fr")
 
 				var isMod = document.getElementById('mod')
 				if (!isMod) {
-					if (channel == 'ann') {
+					if (modonly) {
 						if (msgform) msgform.style = "visibility: hidden"
 						var formplaceholder = document.getElementById('formplaceholder')
 						originalHTML = formplaceholder.innerHTML
@@ -79,12 +80,14 @@ html(lang="fr")
 						console.error(textStatus);
 					}
 				});
+				/*
 				chat.onload = function () {
 					var chat = document.getElementById('chatiframe');
 					if (chat.src.startsWith('http://chat.nathn.tech') || chat.src.startsWith('http://localhost')) {
 						chatiframe.contentWindow.scrollTo(0, 999999);
 					}
 				}
+				*/
 				return false;
 			};
 			function showParams(){ //not used atm
@@ -136,11 +139,14 @@ html(lang="fr")
 				input(type="button" onclick=`window.location.href = '/login';` class='button login_button' value='Connexion')
 			.channels
 				each chan in channelsList
-					if chan.default
-						.channel(onclick=`changeChannel('${chan.selector}');` id=`${chan.selector}chan` style="background-color: #555;")
+					if chan.selector == reqChan
+						.channel(onclick=`changeChannel('${chan.selector}', ${chan.modonly});` id=`${chan.selector}chan` style="background-color: #555;")
+							| ##{chan.name}
+					else if !reqChan && chan.default
+						.channel(onclick=`changeChannel('${chan.selector}', ${chan.modonly});` id=`${chan.selector}chan` style="background-color: #555;")
 							| ##{chan.name}
 					else
-						.channel(onclick=`changeChannel('${chan.selector}');` id=`${chan.selector}chan`)
+						.channel(onclick=`changeChannel('${chan.selector}', ${chan.modonly});` id=`${chan.selector}chan`)
 							| ##{chan.name}
 			//- .param_button(onclick="showParams();" id="param_button")
 				| Paramètres
@@ -154,7 +160,7 @@ html(lang="fr")
 
 		.right_col
 			.messages
-				iframe(src="/chat?chan=gen" id="chatiframe")
+				iframe(src=`/chat?chan=${reqChan || 'gen'}#end` id="chatiframe")
 			.msgform(id="formplaceholder")
 				if user && !user.banned
 					form(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")

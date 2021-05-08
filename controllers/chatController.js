@@ -1,8 +1,10 @@
 const User = require('../models/User');
 const ChatMessage = require('../models/ChatMessage');
 const Channel = require('../models/Channel');
+const Question = require('../models/Question');
 const cloudinary = require('cloudinary').v2;
 const moment = require('moment');
+const levenshtein = require('js-levenshtein');
 // require("copy-paste").global();
 
 moment.locale('fr');
@@ -20,10 +22,10 @@ exports.chatPage = async (req, res) => {
 			errormsg: 'Selected channel not found'
 		});
 		var messages = await ChatMessage.find({
-				channel: req.query.chan
-			}).populate('author').sort({
-				created: 'asc'
-			});
+			channel: req.query.chan
+		}).populate('author').sort({
+			created: 'asc'
+		});
 		if (req.query.chan == 'ann') {
 			function filter_users(message) {
 				return message.author.moderator == true;
@@ -50,10 +52,13 @@ exports.uploadImage = async (req, res, next) => {
 			const image = req.files.image;
 			if (image) {
 				try {
-					await cloudinary.uploader.upload(image.tempFilePath,
-						{format: 'png', transformation: [
-  							{width: 500, crop: "scale"}
-  						]},
+					await cloudinary.uploader.upload(image.tempFilePath, {
+							format: 'png',
+							transformation: [{
+								width: 500,
+								crop: "scale"
+							}]
+						},
 						async function (err, result) {
 							console.log(result, err)
 							if (result) {
@@ -102,19 +107,17 @@ async function html(str, channels) {
 	replacedText = replacedText.replace(replacePattern5, '<code>$1</code>')
 
 	var chanList = "\\B\\#(";
-	for (let i=0; i < channels.length; i++) {
+	for (let i = 0; i < channels.length; i++) {
 		chanList += channels[i].name.toLowerCase();
-		if (i != channels.length-1) chanList += "|"
+		if (i != channels.length - 1) chanList += "|"
 	}
 	chanList += ")\\b"
-	console.log(chanList)
 	replacedText = await replacedText.replace(new RegExp(chanList, "gim"), function (match, input) {
-		for (let i=0; i < channels.length; i++) {
-			if (input.toLowerCase() == channels[i].name.toLowerCase()) chan =  channels[i]
-			if (i != channels.length-1) chanList += "|"
+		for (let i = 0; i < channels.length; i++) {
+			if (input.toLowerCase() == channels[i].name.toLowerCase()) chan = channels[i]
+			if (i != channels.length - 1) chanList += "|"
 		}
 		if (chan) var chanselector = chan.selector
-		console.log(chanselector)
 		var post = match
 		if (chanselector) post = `<a onclick="parent.changeChannel('${chanselector}')" class="link">${match}</a>`;
 		return post;
@@ -133,31 +136,112 @@ exports.sendmsg = async (req, res) => {
 			return res.redirect('back')
 		}
 		if (!req.user) return res.redirect('/fs');
-		if (req.params.channel=='ann' && !req.user.moderator) res.redirect('/fs');
+		if (req.params.channel == 'ann' && !req.user.moderator) res.redirect('/fs');
 		req.body.author = req.user._id;
 		req.body.channel = req.params.channel;
 		var channels = await Channel.find()
 		if (req.body.text) req.body.content = await html(req.body.text.replace(/\</g, "&lt;").replace(/\>/g, "&gt;"), channels)
+		// Interactive quizz implementation
+		var quizzChan = await Channel.findOne({
+			quizzchan: true
+		})
+		if (quizzChan && req.params.channel == quizzChan.selector) {
+			var currentQuestion = await Question.findOne({
+				current: true
+			})
+			if (currentQuestion.type == "maths") {
+				var maxDist = 0
+			} else {
+				var maxDist = 2
+			}
+			if (req.body.text && levenshtein(req.body.text.toLowerCase(), currentQuestion.answer.toLowerCase()) <= maxDist) {
+				req.body.content = "<b>" + currentQuestion.answer + "</b>"
+				const msg = new ChatMessage(req.body);
+				await msg.save();
+				var quizzBot = await User.findOne({
+					username: "quizzbot"
+				})
+				await User.findOneAndUpdate({
+					_id: req.user._id
+				}, {
+					$inc: {
+						questionsAnswered: 1
+					}
+				})
+				await Question.findOneAndUpdate({
+					_id: currentQuestion._id
+				}, {
+					$set: {
+						current: false
+					}
+				})
+
+				if (quizzBot) {
+					var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur.", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
+					var randomMessage = ggMessages[Math.floor(Math.random() * ggMessages.length)];
+					var botMsg = new ChatMessage({
+						author: quizzBot._id,
+						channel: req.params.channel,
+						text: `**C'était bien ${currentQuestion.answer}, ${req.user.name} a trouvé la bonne réponse ! ${randomMessage}**`,
+						content: `<b>C'était bien ${currentQuestion.answer}, ${req.user.name} a trouvé la bonne réponse ! ${randomMessage}</b>`
+					});
+					await botMsg.save();
+					sendNewQuestion(req.params.channel, quizzBot)
+				}
+				return res.redirect('/fs?chan=' + req.params.channel);
+			}
+		}
 		const msg = new ChatMessage(req.body);
 		await msg.save();
-		res.redirect('/fs?chan='+req.params.channel);
+		res.redirect('/fs?chan=' + req.params.channel);
 	} catch (e) {
 		console.log(e);
 		res.redirect('/fs?err=400')
 	}
 }
 
+async function sendNewQuestion(channel, quizzBot) {
+	await Question.countDocuments().exec(async function (err, count) {
+		var random = Math.floor(Math.random() * count)
+		Question.findOne().skip(random).exec(
+			async function (err, result) {
+				if (err) return res.render('error', {
+					errormsg: err
+				});
+				await Question.findOneAndUpdate({
+					_id: result._id
+				}, {
+					$set: {
+						current: true
+					}
+				})
+				var newQMessages = ["Nouvelle question : ", "Question suivante : ", "Nouvelle question ! ", "On passe à la question suivante : "]
+				var randomMessage = newQMessages[Math.floor(Math.random() * newQMessages.length)];
+				if (result.type == "maths") randomMessage = "Un peu de maths pour cette prochaine question : "
+				var botMsg = new ChatMessage({
+					author: quizzBot._id,
+					channel: channel,
+					text: `**${randomMessage}${result.question}**`,
+					content: `<b>${randomMessage}${result.question}</b>`
+				});
+				// 5 seconds between each question
+				setTimeout(async function saveMsg() {await botMsg.save()}, 5000);
+			}
+		)
+	})
+}
+
 
 exports.deletemsg = async (req, res) => {
 	try {
 		const message = await ChatMessage.findOne({
-				_id: req.params.id
-			});
+			_id: req.params.id
+		});
 		if (message) channel = message.channel
-		if (req.user && req.user.moderator && message){
+		if (req.user && req.user.moderator && message) {
 			await ChatMessage.deleteOne(message);
 		}
-		res.redirect('/chat?chan='+channel);
+		res.redirect('/chat?chan=' + channel);
 	} catch (e) {
 		console.log(e);
 		res.redirect('/fs?err=400')
@@ -166,20 +250,19 @@ exports.deletemsg = async (req, res) => {
 
 exports.ban = async (req, res) => {
 	try {
-		if (req.user && req.user.moderator){
+		if (req.user && req.user.moderator) {
 			await User.findOneAndUpdate({
 				_id: req.params.id
-			},
-			{
+			}, {
 				banned: true
 			});
 		}
-		res.redirect('/chat?chan='+req.params.channel);
+		res.redirect('/chat?chan=' + req.params.channel);
 	} catch (e) {
 		console.log(e);
 		res.render('error', {
-						errormsg: e
-					});
+			errormsg: e
+		});
 	}
 }
 /*
@@ -215,7 +298,7 @@ exports.postcode = async (req, res) => {
 		req.body.channel = req.params.channel;
 		const msg = new ChatMessage(req.body);
 		await msg.save();
-		res.redirect('/fs?chan='+req.params.channel);
+		res.redirect('/fs?chan=' + req.params.channel);
 	} catch (e) {
 		console.log(e);
 		res.render('error', {

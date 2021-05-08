@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
 	banned: {
 		type: Boolean,
 		default: false
+	},
+	questionsAnswered: {
+		type: Number,
+		default: 0
 	}
 });
 

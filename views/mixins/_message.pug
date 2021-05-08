@@ -31,9 +31,10 @@ mixin message(message, chan)
 				| &nbsp;
 				i(class="fa fa-ban" title="Utilisateur banni")
 			time(title=`${moment(message.created).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`)  &bull; #{moment(message.created).local().fromNow()}
-			if user && user.moderator
+			if user && (user._id.toString() == message.author._id.toString() || user.moderator)
 				|  &bull;
 				a(href=`/del/${message._id}` style="text-decoration: none; color: #ff0000; outline: none;")  Supprimer
+			if user && user.moderator
 				if user._id.toString() != message.author._id.toString() && !message.author.banned && !message.author.moderator
 					|  &bull;
 					a(href=`/ban/${message.author._id}/${chan}` style="text-decoration: none; color: #ff0000; outline: none;")  Bannir

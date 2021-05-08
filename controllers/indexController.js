@@ -39,7 +39,8 @@ exports.fullscreenPage = async (req, res) => {
 			rank: 1
 		})
 		res.render('window', {
-			channelsList
+			channelsList,
+			reqChan: req.query.chan
 		});
 	} catch (e) {
 		console.log(e);

@@ -15,6 +15,14 @@ const msgSchema = new mongoose.Schema({
 	rank: {
 		type: Number,
 		unique: true
+	},
+	modonly: {
+		type: Boolean,
+		default: false
+	},
+	quizzchan: {
+		type: Boolean,
+		default: false
 	}
 });
 
