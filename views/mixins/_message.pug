@@ -1,5 +1,5 @@
 mixin message(message, chan)
-	.message
+	.message(quizz = `${message.author.username == 'quizzbot' && message.content.endsWith("?</b>") ? 'true' : 'false'}`)
 		if message.text || message.image
 			.messagetext
 				| !{message.content || message.text}

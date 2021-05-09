@@ -177,7 +177,7 @@ exports.sendmsg = async (req, res) => {
 				})
 
 				if (quizzBot) {
-					var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur.", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
+					var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur...", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
 					var randomMessage = ggMessages[Math.floor(Math.random() * ggMessages.length)];
 					var botMsg = new ChatMessage({
 						author: quizzBot._id,
@@ -185,7 +185,7 @@ exports.sendmsg = async (req, res) => {
 						text: `**C'était bien ${currentQuestion.answer}, ${req.user.name} a trouvé la bonne réponse ! ${randomMessage}**`,
 						content: `<b>C'était bien ${currentQuestion.answer}, ${req.user.name} a trouvé la bonne réponse ! ${randomMessage}</b>`
 					});
-					await botMsg.save();
+					setTimeout(async function saveMsg() {await botMsg.save()}, 1500);
 					sendNewQuestion(req.params.channel, quizzBot)
 				}
 				return res.redirect('/fs?chan=' + req.params.channel);

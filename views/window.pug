@@ -12,21 +12,11 @@ html(lang="fr")
 		script(type="text/javascript").
 			var originalHTML = ""
 			async function loadedPage(){
-				var content = ''
+				window.HTMLcontent = ""
 				await updateChat()
 				refresh = await setInterval(updateChat, 2000)
 				return false;
 			};
-			function GetURLParameter(sParam) {
-				var sPageURL = window.location.search.substring(1);
-				var sURLVariables = sPageURL.split('&');
-				for (var i = 0; i < sURLVariables.length; i++) {
-					var sParameterName = sURLVariables[i].split('=');
-					if (sParameterName[0] == sParam) {
-						return sParameterName[1];
-					}
-				}
-			}
 			function changeChannel(channel, modonly){
 
 				var currentChannel = document.getElementById('chatiframe').getAttribute("src").slice(document.getElementById('chatiframe').getAttribute("src").length - 7).substring(0,3);
@@ -71,23 +61,19 @@ html(lang="fr")
 					url: document.getElementById('chatiframe').getAttribute("src"),
 					type: 'GET',
 					success: (res) => {
-						if (content.length !== res.length) {
-							content = res;
-							chat.src = chat.src;
+						if (window.HTMLcontent !== res) {
+							window.HTMLcontent = res;
+							chat.contentWindow.location.reload();
+							console.log("Refreshed chat")
 						}
 					},
 					error: (jqXHR, textStatus, errorThrown) => {
 						console.error(textStatus);
 					}
 				});
-				/*
 				chat.onload = function () {
-					var chat = document.getElementById('chatiframe');
-					if (chat.src.startsWith('http://chat.nathn.tech') || chat.src.startsWith('http://localhost')) {
-						chatiframe.contentWindow.scrollTo(0, 999999);
-					}
+					chat.contentWindow.scrollTo(0, 999999);
 				}
-				*/
 				return false;
 			};
 			function showParams(){ //not used atm
@@ -163,7 +149,7 @@ html(lang="fr")
 				iframe(src=`/chat?chan=${reqChan || 'gen'}#end` id="chatiframe")
 			.msgform(id="formplaceholder")
 				if user && !user.banned
-					form(action='/sendmsg/gen' method='POST' enctype='multipart/form-data' id="msgform")
+					form(action=`/sendmsg/${reqChan || 'gen'}` method='POST' enctype='multipart/form-data' id="msgform")
 						input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
 
 						label(for="uploadimg")
@@ -171,7 +157,7 @@ html(lang="fr")
 								i(class="fa fa-image icon-pic")
 						input(type="file" name="image" style="display: none;" id="uploadimg" accept='image/*' onChange='getOutput();')
 
-						a(id='codelink' href="/code/gen" style="text-decoration: none; color: #D7D5D9; outline: none;")
+						a(id='codelink' href=`/code/${reqChan || 'gen'}` style="text-decoration: none; color: #D7D5D9; outline: none;")
 							div(id='codebutton' class='code_button' type="button" title="Ajouter du code")
 								i(class="fa fa-code")
 
