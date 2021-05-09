@@ -27,6 +27,12 @@ mixin message(message, chan)
 			if message.author.bughunter
 				| &nbsp;
 				i(class="fa fa-bug" title="Chasseur de bugs")
+			if message.author.questionsAnswered > 99
+				| &nbsp;
+				i(class="fa fa-rocket" title="À répondu à plus de 100 questions du quizz !")
+			if message.author.quizzFirst
+				| &nbsp;
+				i(class="fa fa-trophy" title="Est actuellement premier au classement du quizz !")
 			if message.author.banned
 				| &nbsp;
 				i(class="fa fa-ban" title="Utilisateur banni")

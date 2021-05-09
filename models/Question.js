@@ -8,6 +8,10 @@ const msgSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
+	trivia: {
+		type: String,
+		trim: true
+	},
 	type: {
 		type: String,
 		trim: true,

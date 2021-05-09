@@ -117,6 +117,12 @@ html(lang="fr")
 					if user.bughunter
 						| &nbsp;
 						i(class="fa fa-bug" title="Chasseur de bugs")
+					if user.questionsAnswered > 99
+						| &nbsp;
+						i(class="fa fa-rocket" title="A répondu à plus de 100 questions du quizz !")
+					if user.quizzFirst
+						| &nbsp;
+						i(class="fa fa-trophy" title="Est actuellement premier au classement du quizz !")
 					if user.banned
 						| &nbsp;
 						i(class="fa fa-ban" title="Utilisateur banni" id="ban")

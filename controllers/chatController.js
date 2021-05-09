@@ -152,7 +152,7 @@ exports.sendmsg = async (req, res) => {
 			if (currentQuestion.type == "maths") {
 				var maxDist = 0
 			} else {
-				var maxDist = 2
+				var maxDist = 3
 			}
 			if (req.body.text && levenshtein(req.body.text.toLowerCase(), currentQuestion.answer.toLowerCase()) <= maxDist) {
 				req.body.content = "<b>" + currentQuestion.answer + "</b>"
@@ -161,6 +161,9 @@ exports.sendmsg = async (req, res) => {
 				var quizzBot = await User.findOne({
 					username: "quizzbot"
 				})
+				var bestUser = await User.findOne({
+					quizzFirst: true
+				})
 				await User.findOneAndUpdate({
 					_id: req.user._id
 				}, {
@@ -168,6 +171,22 @@ exports.sendmsg = async (req, res) => {
 						questionsAnswered: 1
 					}
 				})
+				if (req.user.quizzFirst != true && req.user.questionsAnswered > bestUser.questionsAnswered) {
+					await User.findOneAndUpdate({
+						_id: req.user._id
+					}, {
+						$set: {
+							quizzFirst: true
+						}
+					})
+					await User.findOneAndUpdate({
+						_id: bestUser._id
+					}, {
+						$set: {
+							quizzFirst: false
+						}
+					})
+				}
 				await Question.findOneAndUpdate({
 					_id: currentQuestion._id
 				}, {
@@ -177,8 +196,12 @@ exports.sendmsg = async (req, res) => {
 				})
 
 				if (quizzBot) {
-					var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur...", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
-					var randomMessage = ggMessages[Math.floor(Math.random() * ggMessages.length)];
+					if (currentQuestion.trivia) {
+						var randomMessage = currentQuestion.trivia
+					} else {
+						var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur...", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
+						var randomMessage = ggMessages[Math.floor(Math.random() * ggMessages.length)];
+					}
 					var botMsg = new ChatMessage({
 						author: quizzBot._id,
 						channel: req.params.channel,

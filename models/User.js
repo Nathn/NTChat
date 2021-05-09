@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
 	questionsAnswered: {
 		type: Number,
 		default: 0
+	},
+	quizzFirst: {
+		type: Boolean,
+		default: false
 	}
 });
 
