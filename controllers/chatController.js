@@ -25,7 +25,7 @@ exports.chatPage = async (req, res) => {
 			channel: req.query.chan
 		}).populate('author').sort({
 			created: 'asc'
-		});
+		}).limit(300);
 		if (req.query.chan == 'ann') {
 			function filter_users(message) {
 				return message.author.moderator == true;

@@ -73,6 +73,7 @@ html(lang="fr")
 				});
 				chat.onload = function () {
 					chat.contentWindow.scrollTo(0, 999999);
+					document.getElementById('message_input').focus()
 				}
 				return false;
 			};
@@ -150,7 +151,7 @@ html(lang="fr")
 			.msgform(id="formplaceholder")
 				if user && !user.banned
 					form(action=`/sendmsg/${reqChan || 'gen'}` method='POST' enctype='multipart/form-data' id="msgform")
-						input(name='text' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
+						input(name='text' id='message_input' class='message_input' placeholder='Envoyer un message...' maxlength="256" rows='2' autofocus autocomplete="off")
 
 						label(for="uploadimg")
 							div(class='image_button' title="Ajouter une image" type="button")
