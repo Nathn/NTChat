@@ -149,7 +149,7 @@ exports.sendmsg = async (req, res) => {
 			var currentQuestion = await Question.findOne({
 				current: true
 			})
-			if (currentQuestion.type == "maths") {
+			if (currentQuestion.type == "maths" || currentQuestion.type == "date") {
 				var maxDist = 0
 			} else {
 				var maxDist = 3
@@ -199,7 +199,7 @@ exports.sendmsg = async (req, res) => {
 					if (currentQuestion.trivia) {
 						var randomMessage = currentQuestion.trivia
 					} else {
-						var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur...", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !"]
+						var ggMessages = ["Quel crack celui là !", "GGWP.", "Juste le boss en fait.", "Poggers !", "Il doit avoir un QI d'au moins 143.", "Je suis jaloux...", "J'avais peur que personne ne soit à la hauteur...", "Tu es trop fort... That's kinda sus.", "L'humanité n'attendait plus que toi !", "Mais c'est une vraie machine de guerre celui-là !"]
 						var randomMessage = ggMessages[Math.floor(Math.random() * ggMessages.length)];
 					}
 					var botMsg = new ChatMessage({
