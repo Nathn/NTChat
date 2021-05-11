@@ -154,7 +154,7 @@ exports.sendmsg = async (req, res) => {
 			} else {
 				var maxDist = 3
 			}
-			if (req.body.text && levenshtein(req.body.text.toLowerCase(), currentQuestion.answer.toLowerCase()) <= maxDist) {
+			if (req.body.text && levenshtein(req.body.text.toLowerCase(), currentQuestion.answer.toLowerCase()) <= maxDist && req.user) {
 				req.body.content = "<b>" + currentQuestion.answer.charAt(0).toUpperCase() + currentQuestion.answer.slice(1) + "</b>"
 				const msg = new ChatMessage(req.body);
 				await msg.save();
