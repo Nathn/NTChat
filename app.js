@@ -43,7 +43,7 @@ app.use(session({
 	store: new MongoStore({
 		mongooseConnection: mongoose.connection
 	}),
-	cookie: { maxAge: 60000 }
+	cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 } // preserve session for a year
 }));
 
 app.use(fileupload({
